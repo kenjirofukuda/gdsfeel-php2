@@ -1,6 +1,11 @@
 #+tile: gdsfeel-php2
 #+author: kenjirofukuda@gmail.com
 
+| gdsfeel-php  | バニラPHPで書きなぐった実装     |
+| lara1        | laracastによるビデオ学習の追従  |
+| gdsfeel-php2 | lara1で学んだ成果を小出し反映中 |
+
+
 現在、Web機能なし、PHPによる基礎クラスとユニットテストのみ
 
 * 以降状況
