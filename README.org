@@ -1,0 +1,17 @@
+#+tile: gdsfeel-php2
+#+author: kenjirofukuda@gmail.com
+
+現在、Web機能なし、PHPによる基礎クラスとユニットテストのみ
+
+* 以降状況
+- php 実装の基礎クラスをLaravelレイアウトに準拠
+- 基礎クラスのテストに着手
+- 出力ファイルを storage 配下に統一
+- echo によるデバッグ出力から、logger()->ベースへ移行
+
+* 今後の予定（順未定）
+- blade による画面レイアウト
+- JavaScriptのモジュール化及び node ベースへの開発移行
+- レイヤー管理の追加
+- gdsデータのアップロード対応
+- 複数ライブラリ対応

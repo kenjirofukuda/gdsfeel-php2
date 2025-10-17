@@ -5,15 +5,40 @@ namespace App\gds;
 require_once 'consts.php';
 require_once 'stream.php';
 
+/**
+ * copnvert from GDSII stream format to internal format
+ */
 class Inform
 {
+    /**
+     * input file path (GDSII format)
+     */
     public string $gdspath = '';
+
+    /**
+     * result of convert
+     */
     public ?Library $library = null;
+
+    /**
+     * public but intternal use only
+     */
     public ?Structure $structure = null;
+
+    /**
+     * public but intternal use only
+     */
     public ?Element $element = null;
 
+    /**
+     * execute convert
+     *
+     * result of Library data into attribute $this->library
+     * before call must be set attribute $this->gdspath
+     */
     function run(): void
     {
+        logger()->info("inform begin:");
         $rec_count = 0;
         $fh = null;
         make_reversemap();
@@ -33,7 +58,7 @@ class Inform
                 fclose($fh);
             }
         }
-        logger()->info("number of records = $rec_count");
+        logger()->info("inform end: number of records = $rec_count");
     }
 
 
@@ -71,7 +96,7 @@ class Inform
         if ($data_type != NO_DATA) {
             $info[] = $detail;
         }
-        // print_r($info);
+        logger()->debug(print_r($info, true));
         switch ($rec_type) {
             case BGNLIB:
                 $this->library = new Library();
@@ -166,13 +191,13 @@ function example_std_serialize($lib): void
     $ser = \serialize($lib);
     logger()->debug($ser);
     $file = base_path('storage/data.bin');
-    logger()->debug("[$file]");
+    logger()->debug("start serializeto file: \"$file\"");
     $reply = \file_put_contents($file, $ser);
     if (!$reply) {
         logger()->error("Write Fail: $file");
     }
     $lib2 = \unserialize(\file_get_contents($file));
-    print_r($lib2);
+    logger()->debug(print_r($lib2, true));
 }
 
 if (false) {
