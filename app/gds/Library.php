@@ -2,8 +2,6 @@
 
 namespace App\gds;
 
-// require_once 'Structure.php';
-
 /**
  * Description of Library
  *

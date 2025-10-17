@@ -2,8 +2,6 @@
 
 namespace App\gds;
 
-// require_once 'consts.php';
-
 /**
  * Description of Element
  *

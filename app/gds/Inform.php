@@ -2,12 +2,8 @@
 
 namespace App\gds;
 
-// use Illuminate\Foundation\Exceptions\Renderer\Exception;
-
 require_once 'consts.php';
 require_once 'stream.php';
-// require_once 'Library.php';
-// require_once 'Structure.php';
 
 class Inform
 {
@@ -32,14 +28,12 @@ class Inform
                 $this->handle_record($bytes);
                 $rec_count++;
             }
-        // } catch (\Exception $e) {
-        //     echo $e->getMessage(), GDS_EOL;
         } finally {
             if (is_resource($fh)) {
                 fclose($fh);
             }
         }
-        // echo "number of records = $rec_count", GDS_EOL;
+        logger()->info("number of records = $rec_count");
     }
 
 
@@ -143,7 +137,6 @@ class Inform
             case ENDEL:
                 if ($this->structure != null && $this->element != null) {
                     $this->structure->addElement($this->element);
-                    // echo $this->element, GDS_EOL;
                     $this->element = null;
                 }
                 break;
@@ -171,12 +164,12 @@ function example_gds_path(): string
 function example_std_serialize($lib): void
 {
     $ser = \serialize($lib);
-    echo $ser, GDS_EOL;
+    logger()->debug($ser);
     $file = base_path('storage/data.bin');
-    echo "[$file]", GDS_EOL;
+    logger()->debug("[$file]");
     $reply = \file_put_contents($file, $ser);
     if (!$reply) {
-        echo "Write Fail: $file", GDS_EOL;
+        logger()->error("Write Fail: $file");
     }
     $lib2 = \unserialize(\file_get_contents($file));
     print_r($lib2);
