@@ -32,8 +32,8 @@ class Inform
                 $this->handle_record($bytes);
                 $rec_count++;
             }
-        } catch (\Exception $e) {
-            echo $e->getMessage(), GDS_EOL;
+        // } catch (\Exception $e) {
+        //     echo $e->getMessage(), GDS_EOL;
         } finally {
             if (is_resource($fh)) {
                 fclose($fh);

@@ -10,6 +10,8 @@ beforeAll(function () {
 });
 
 test('raise Exception on missing attribute gdspath ', function () {
+    $this->withoutExceptionHandling();
+
     $inform = new Inform();
     $this->expectException(\Exception::class);
     $this->expectExceptionMessage('not found');
@@ -18,6 +20,8 @@ test('raise Exception on missing attribute gdspath ', function () {
 
 
 test('raise Exception on non gdsfile specified ', function () {
+    $this->withoutExceptionHandling();
+
     $inform = new Inform();
     $inform->gdspath = base_path('resources/js/app.js');
     $this->expectException(\Exception::class);
@@ -29,7 +33,7 @@ test('seedgds accessable', function () {
 });
 
 
-test('correct libray', function () {
+test('correct convert to libray', function () {
     $inform = new Inform();
     $inform->gdspath = base_path('resources/seedgds/test.gds');
     $inform->run();
