@@ -6,20 +6,21 @@
 
 lara1で学んだ成果をgdsfeel-phpと合成しながら小出し反映中
 
+現在、PHPによる基礎クラスとユニットテストのみ(Web機能なし)
+
 ** 関連
 
 | [[https://github.com/kenjirofukuda/gdsfeel-php][gdsfeel-php]]  | バニラPHPで書きなぐった実装     |
 | [[https://github.com/kenjirofukuda/lara1][lara1]]        | laracastによるビデオ学習の追従  |
 
 
-現在、Web機能なし、PHPによる基礎クラスとユニットテストのみ
-
 ** テスト実行
 #+begin_src bash
   git clone https://github.com/kenjirofukuda/gdsfeel-php2.git
   cd gdsfeel-php2/
+  cp .env.example .env
   composer install
-  artisan test
+  composer dev test
 #+end_src
 
 
