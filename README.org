@@ -16,8 +16,10 @@ lara1で学んだ成果をgdsfeel-phpと合成しながら小出し反映中
 
 ** テスト実行
 #+begin_src bash
-    cd gdsfeel-php2
-    artisan test
+  git clone https://github.com/kenjirofukuda/gdsfeel-php2.git
+  cd gdsfeel-php2/
+  composer install
+  artisan test
 #+end_src
 
 
