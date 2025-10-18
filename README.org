@@ -1,6 +1,6 @@
-#+tile: gdsfeel-php2
+#+title: gdsfeel-php2
 #+author: kenjirofukuda@gmail.com
-#+options: toc:nil num:nil ^:nil
+#+options: toc:nil ^:nil
 
 * リポジトリ概要
 
@@ -23,7 +23,6 @@ lara1で学んだ成果をgdsfeel-phpと合成しながら小出し反映中
   composer dev test
 #+end_src
 
-
 * 移行状況
 - php 実装の基礎クラスをLaravelレイアウトに準拠
 - 基礎クラスのテストに着手
@@ -36,3 +35,102 @@ lara1で学んだ成果をgdsfeel-phpと合成しながら小出し反映中
 - レイヤー管理の追加
 - gdsデータのアップロード対応
 - 複数ライブラリ対応
+
+* 移行手順
+** PHPクラス群
+PHP実装のクラス群は、最終的に統一できると思うが現在はLaravelの自動生成クラスとの衝突による破綻を防ぐため、同一役割のクラスが2つ存在するという不自然な形をあえてとる。
+
+=artisan make:model= にて自動生成させたクラスのインスタンス変数名、メソッド名とJSONベースのクラスの衝突状況を確認しながら、肉付けを行っていく。
+
+
+合成が完了してもまだ app/gds/ 配下は削除しない。完全な削除は両方のベンチマークをとってからでも遅くはない。
+
+
+*** 凡例
+| app/gds/{クラス}*.php    | JSON前提のクラス群 |
+| app/Models/{クラス}*.php | RDB前提のクラス群  |
+
+*** 実例
+#+begin_src
+app/gds/Library.php
+...
+app/Models/Library.php
+...
+#+end_src
+
+*  RDBに適用できるか?
+データ構造が単純なRDBで置き換えられるような形式ではないためLaravel向きではない。
+クライアント描画の都合上、JSON主体なのでMongoDB向きなのかもしれない。
+
+MongoDBに移行する際は [[https://www.mongodb.com/resources/products/compatibilities/mongodb-laravel-integration][MongoDB and Laravel Integration]] を参考にすること。
+
+Laravelそのものは、ビューの記述を簡素化させる目的で使用しても問題はないがRDBを使わない前提ならオーバースペックすぎる。
+
+どちらにしても、Webストレージに保存してクライアント側でゴリゴリやったほうがレスポンスが良いと想定している。
+どちらが速いかをみるためにも計測してみる価値はある。
+
+* RDBにした場合(無理やり)
+注）全ては網羅していない、連携の思案
+
+**  Library
+
+- 関連 :: Library hasMany(Structure)
+
+
+| フィールド    | タイプ   | 備考                                           |
+|---------------+----------+--------------------------------------------|
+| id            | INTEGER  | AUTO                                       |
+| name          | VARCHAR  | 内部名（ファイル名ではない）               |
+| self_created  | DATETIME | 作成タイムスタンプ（レコード生成ではない） |
+| self_modified | DATETIME | 修正タイムスタンプ（レコード修正ではない） |
+| user_unit     | REAL     | ex. 0.001 1データベース単位の値            |
+| meter_unit    | REAL     | ex. 単位 1e-9: micron                      |
+
+**  Structure
+
+- 関連 :: Structure hasMany(Element)
+
+| フィールド    | タイプ   | 備考                                           |
+|---------------+----------+--------------------------------------------|
+| id            | INTEGER  | AUTO                                       |
+| name          | VARCHAR  | ストラクチャ名                             |
+| self_created  | DATETIME | 作成タイムスタンプ（レコード生成ではない） |
+| self_modified | DATETIME | 修正タイムスタンプ（レコード修正ではない） |
+| library_id    | INTEGER  | 所属ライブラリid                           |
+
+
+**  Element
+
+インスタンス化されるときは別々のクラスとなるが、テーブルの種類が肥大化するのを避けるため単一のテーブルにユニオン定義する。
+よって、無駄なフィールドも多くなる。
+
+- 関連 ::  hasMany(Coord)
+
+| フィールド   | タイプ        | 備考                     |
+|--------------+---------------+--------------------------|
+| id           | INTEGER       | AUTO                     |
+| type         | INTEGER       | Elementタイプ            |
+| library_id   | INTEGER       | 所属ライブラリid         |
+| structure_id | INTEGER       | 所属ストラクチャid       |
+| elkey        | INTEGER       | ストラクチャ内ユニークID |
+| ref_name     | VARCHAR       | SREF,AREF                |
+| coods ※ 1    | TEXT or JSONB | 座標群のJSON表現         |
+
+***  ※ 1 coods 座標群
+
+- 候補1 :: テーブル化
+- 候補2 :: coords フィールドを設けて JSON 形式で保存
+
+**  Coord
+
+座標
+
+以下は
+座標群の格納に、テーブル化を選択した場合
+
+| フィールド | タイプ  | 備考         |
+|------------+---------+--------------|
+| id         | INTEGER | AUTO         |
+| x          | REAL    |              |
+| y          | REAL    |              |
+| element_id | INTEGER | エレメントid |
