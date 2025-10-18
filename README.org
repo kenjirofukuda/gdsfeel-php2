@@ -1,14 +1,27 @@
 #+tile: gdsfeel-php2
 #+author: kenjirofukuda@gmail.com
+#+options: toc:nil num:nil ^:nil
 
-| gdsfeel-php  | バニラPHPで書きなぐった実装     |
-| lara1        | laracastによるビデオ学習の追従  |
-| gdsfeel-php2 | lara1で学んだ成果を小出し反映中 |
+* リポジトリ概要
+
+lara1で学んだ成果をgdsfeel-phpと合成しながら小出し反映中
+
+** 関連
+
+| [[https://github.com/kenjirofukuda/gdsfeel-php][gdsfeel-php]]  | バニラPHPで書きなぐった実装     |
+| [[https://github.com/kenjirofukuda/lara1][lara1]]        | laracastによるビデオ学習の追従  |
 
 
 現在、Web機能なし、PHPによる基礎クラスとユニットテストのみ
 
-* 以降状況
+** テスト実行
+#+begin_src bash
+    cd gdsfeel-php2
+    artisan test
+#+end_src
+
+
+* 移行状況
 - php 実装の基礎クラスをLaravelレイアウトに準拠
 - 基礎クラスのテストに着手
 - 出力ファイルを storage 配下に統一
