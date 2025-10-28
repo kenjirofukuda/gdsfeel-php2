@@ -1,10 +1,6 @@
 @php
 $struc_name = "dummy_struct" ;
 $head = "dummy_head" ;
-$element = [
-'attr1' => 'val1',
-'attr2' => 'val2',
-];
 //$inform = Inform::seed_instance();
 //var_dump($inform);
 $struc_name = $structure->name ?? '';
@@ -30,7 +26,7 @@ $struc_name = $structure->name ?? '';
             <div id="row2" class="content row flex">
                 <!-- Structure リスト -->
                 @include('partials.structurelist')
-                @if (true)
+                @if (isset($structure))
                     <!-- Element リスト -->
                     @include('partials.elementlist')
                 @endif

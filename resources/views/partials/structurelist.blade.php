@@ -1,12 +1,10 @@
-@php
-$basic_class = 'block border-b border-gray-400';
-@endphp
 <div id="struc-list" class="border border-gray400 flex vscroll">
     @foreach ($library->structureNames() as $sn)
-        <a
+        <x-navlink
             href="/structure/{{ $sn }}"
-            class="{{ $basic_class }}">
+            :active="$struc_name === $sn"
+        >
             {{ $sn }}
-        </a>
+        </x-navlink>
     @endforeach
 </div>

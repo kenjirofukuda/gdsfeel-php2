@@ -15,7 +15,8 @@ Route::get('/structure/{name}', function ($name) {
     $structure = $library->structureNamed($name);
     return view('view1', [
         'library' => $library,
-        'structure' => $structure
+        'structure' => $structure,
+        'element' => null
     ]);
 });
 
