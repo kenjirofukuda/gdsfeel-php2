@@ -9,8 +9,8 @@ $struc_name = $structure->name ?? '';
 <html>
     <head>
         <title>GdsFeel</title>
-        <script src="https://cdn.tailwindcss.com"></script>
         <link rel="stylesheet" href="{{ asset('css/styles2.css') }}">
+        <script src="https://cdn.tailwindcss.com"></script>
     </head>
     <body>
         <div id="container" class="box max-h-full">
@@ -19,7 +19,7 @@ $struc_name = $structure->name ?? '';
                 <div id="prefs">
                     ここにプリファレンスパネル
                 </div>
-                <div>data path: <span id="struc_path" class="font-bold"
+                <div>data path: <span id="struc_path" class="font-bold">
                     {{ $library->name . '/' . $struc_name }}
                 </span></div>
             </div>
