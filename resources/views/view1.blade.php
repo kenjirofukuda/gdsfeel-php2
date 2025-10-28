@@ -7,6 +7,7 @@ $element = [
 ];
 //$inform = Inform::seed_instance();
 //var_dump($inform);
+$struc_name = $structure->name ?? '';
 @endphp
 <!DOCTYPE html>
 <html>
@@ -22,28 +23,16 @@ $element = [
                 <div id="prefs">
                     ここにプリファレンスパネル
                 </div>
-                <div>data path: <span id="struc_path" class="font-bold">
-                    {{ $head }}
+                <div>data path: <span id="struc_path" class="font-bold"
+                    {{ $library->name . '/' . $struc_name }}
                 </span></div>
             </div>
             <div id="row2" class="content row flex">
                 <!-- Structure リスト -->
-                <div id="struc-list" class="flex vscroll">
-                    <ul class="no-bullets nav-list-vivid">
-                        @foreach ($library->structureNames() as $sn)
-                            <li>{{ $sn }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-                @if (1 === 0)
+                @include('partials.structurelist')
+                @if (true)
                     <!-- Element リスト -->
-                    <div id="element-list" class="flex vscroll">
-                        <ul class="no-bullets nav-list-vivid">
-                            @for ($i = 0; $i < 10; $i++)
-                                <li>elem-{{ $i }}</li>
-                            @endfor
-                        </ul>
-                    </div>
+                    @include('partials.elementlist')
                 @endif
                 @if (1 === 0)
                     <!-- Element インスペクター -->
