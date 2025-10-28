@@ -40,3 +40,10 @@ test('correct convert to libray', function () {
     $this->assertIsObject($inform->library);
 });
 
+test('singleton instance 1st', function () {
+    $this->assertIsObject(Inform::seed_instance()->library);
+});
+
+test('singleton instance 2nd', function () {
+    $this->assertIsObject(Inform::seed_instance()->library);
+});

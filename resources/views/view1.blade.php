@@ -5,11 +5,11 @@ $element = [
 'attr1' => 'val1',
 'attr2' => 'val2',
 ];
+//$inform = Inform::seed_instance();
+//var_dump($inform);
 @endphp
-
 <!DOCTYPE html>
 <html>
-
     <head>
         <title>GdsFeel</title>
         <script src="https://cdn.tailwindcss.com"></script>
@@ -20,7 +20,7 @@ $element = [
             <div id="row1" class="header row">
                 <div id="struc_name" style="visibility: hidden;">{{ $struc_name }}</div>
                 <div id="prefs">
-                    <!-- ここにプリファレンスパネル -->
+                    ここにプリファレンスパネル
                 </div>
                 <div>data path: <span id="struc_path" class="font-bold">
                     {{ $head }}
@@ -30,9 +30,9 @@ $element = [
                 <!-- Structure リスト -->
                 <div id="struc-list" class="flex vscroll">
                     <ul class="no-bullets nav-list-vivid">
-                        @for ($i = 0; $i < 10; $i++)
-                            <li>struc-{{ $i }}</li>
-                        @endfor
+                        @foreach ($library->structureNames() as $sn)
+                            <li>{{ $sn }}</li>
+                        @endforeach
                     </ul>
                 </div>
                 @if (1 === 0)

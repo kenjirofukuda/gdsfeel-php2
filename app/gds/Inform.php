@@ -30,6 +30,22 @@ class Inform
      */
     public ?Element $element = null;
 
+
+    private static ?Inform $seed_instance = null;
+
+
+    public static function seed_instance()
+    {
+        if (self::$seed_instance === null) {
+            $inform = new Inform();
+            $inform->gdspath = resource_path('seedgds/test.gds');
+            $inform->run();
+            self::$seed_instance = $inform;
+        }
+        return self::$seed_instance;
+    }
+
+
     /**
      * execute convert
      *
@@ -68,27 +84,22 @@ class Inform
         $data_type = $bytes[2];
         $data = array_slice($bytes, 2);
         assert(count($data) % 2 == 0);
-        $int2_array = [];
-        $int4_array = [];
-        $ascii = '';
-        $bitmask = 0;
-        $real8_array = [];
         $detail = null;
         switch ($data_type) {
             case INT2:
-                $detail = $int2_array = extract_int2_array($data);
+                $detail =  extract_int2_array($data);
                 break;
             case INT4:
-                $detail = $int4_array = extract_int4_array($data);
+                $detail = extract_int4_array($data);
                 break;
             case REAL8:
-                $detail = $real8_array = extract_real8_array($data);
+                $detail = extract_real8_array($data);
                 break;
             case BIT_ARRAY:
-                $detail = $bitmask = extract_bitmask($data);
+                $detail = extract_bitmask($data);
                 break;
             case ASCII:
-                $detail = $ascii = extract_ascii($data);
+                $detail = extract_ascii($data);
                 break;
         }
         $detail = one_element_as_atomic($detail);
@@ -96,7 +107,7 @@ class Inform
         if ($data_type != NO_DATA) {
             $info[] = $detail;
         }
-        logger()->debug(print_r($info, true));
+        // logger()->debug(print_r($info, true));
         switch ($rec_type) {
             case BGNLIB:
                 $this->library = new Library();

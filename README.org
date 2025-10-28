@@ -1,6 +1,7 @@
 #+title: gdsfeel-php2
 #+author: kenjirofukuda@gmail.com
-#+options: toc:nil ^:nil
+#+startup: content
+#+options: ^:nil
 
 * リポジトリ概要
 
@@ -177,3 +178,77 @@ Tailwindはこのリセットによって、開発者が常に白紙の状態か
 - https://tailwindcss.com/docs/colors
 - [[https://webplus8.com/laravel-blade-include-tips/][【Laravel】Bladeテンプレートでの@include活用術]]
  
+
+* DEBUGログの抑止
+
+DEBUGログを抑止するために
+#+begin_example
+LOG_CHANNEL=stack
+LOG_STACK=single
+LOG_DEPRECATIONS_CHANNEL=null
+LOG_LEVEL=info
+#+end_example
+の条件にて
+
+#+begin_src bash
+artisan serv
+#+end_src
+単体ではDEBUG出力されないのに
+
+#+begin_src bash
+composer run dev
+#+end_src
+では出力されてしまう。
+
+内部では単に
+#+begin_example
+        "dev": [
+            "Composer\\Config::disableProcessTimeout",
+            "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"php artisan pail --timeout=0\" \"npm run dev\" --names=server,queue,logs,vite --kill-others"
+        ],
+#+end_example
+servを呼び出しているにも関わらず
+
+とりあえず、以下で抑止
+#+begin_src bash
+composer run --quiet dev
+#+end_src
+
+* ログの影響
+
+#+caption: ログ有
+#+begin_example
+   PASS  Tests\Feature\InformTest
+  ✓ singleton instance 1st                                                                          1.85s  
+  ✓ singleton instance 2nd                                                                          0.93s  
+#+end_example
+
+#+caption: ログ無
+#+begin_example
+   PASS  Tests\Feature\InformTest
+  ✓ singleton instance 1st                                                                          0.21s  
+  ✓ singleton instance 2nd                                                                          0.11s  
+#+end_example
+
+#+tblname: ログ出力の付加係数
+|     | no log | with log | ratio |
+|-----+--------+----------+-------|
+| 1st |   1.85 |     0.21 |  8.81 |
+| 2nd |   0.93 |     0.11 |  8.45 |
+|-----+--------+----------+-------|
+|     |   1.99 |     1.91 |       |
+#+TBLFM: @2$4=@2$2/@2$3;%.2f::@3$4=@3$2/@3$3;%.2f
+#+TBLFM: @4$2=@2$2/@3$2;%.2f::@4$3=@2$3/@3$3;%.2f
+
+* デバッガーの有効化
+
+#+begin_src bash :results none :dir (file-name-directory (buffer-file-name))
+composer require barryvdh/laravel-debugbar --dev
+#+end_src
+
+内部で以下のスクリプトが呼ばれているが
+#+begin_example
+@php artisan vendor:publish --tag=laravel-assets --ansi --force
+#+end_example
+ターミナル上でなくBabelなので --asciiをバイパスしたいところ
+エスケープ文字列が垂れ流されてしまう。
