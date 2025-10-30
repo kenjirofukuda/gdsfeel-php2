@@ -1,8 +1,4 @@
 <?php
-$struc_name = "dummy_struct" ;
-$head = "dummy_head" ;
-//$inform = Inform::seed_instance();
-//var_dump($inform);
 $struc_name = $structure->name ?? '';
 if (!copy(storage_path('lib_data.js'), public_path('js/lib_data.js'))) {
   dd('copy fail: ' . storage_path('lib_data.js') . ' to '. public_path('js/lib_data.js'));
@@ -11,15 +7,10 @@ if (!copy(storage_path('lib_data.js'), public_path('js/lib_data.js'))) {
 <!DOCTYPE html>
 <html>
     <head>
-        <title>GdsFeel</title>
+        <title>{{ env('APP_NAME')  }}</title>
         <link rel="stylesheet" href="{{ asset('css/styles2.css') }}">
-        <script src="https://cdn.tailwindcss.com"></script>
-        <script src="https://code.createjs.com/1.0.0/easeljs.min.js"></script>
-        <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/sprintf/1.1.3/sprintf.min.js"></script>
-        <script src="{{ asset('js/gdsfeel.js') }}"></script>
-        <script src="{{ asset('js/lib_data.js') }}"></script>
-        <script src="{{ asset('js/canvas.js') }}"></script>
+        @include('partials.cdn');
+        @include('partials.scripts');
     </head>
     <body onload="loadIt()">
         <div id="container" class="box max-h-full">

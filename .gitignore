@@ -24,3 +24,6 @@ Homestead.yaml
 Thumbs.db
 /classic/
 /README.html
+/storage/debugbar/
+/storage/data.bin
+/storage/lib_data.js
