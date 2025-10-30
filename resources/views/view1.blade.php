@@ -1,22 +1,31 @@
-@php
+<?php
 $struc_name = "dummy_struct" ;
 $head = "dummy_head" ;
 //$inform = Inform::seed_instance();
 //var_dump($inform);
 $struc_name = $structure->name ?? '';
-@endphp
+if (!copy(storage_path('lib_data.js'), public_path('js/lib_data.js'))) {
+  dd('copy fail: ' . storage_path('lib_data.js') . ' to '. public_path('js/lib_data.js'));
+}
+?>
 <!DOCTYPE html>
 <html>
     <head>
         <title>GdsFeel</title>
         <link rel="stylesheet" href="{{ asset('css/styles2.css') }}">
         <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://code.createjs.com/1.0.0/easeljs.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/sprintf/1.1.3/sprintf.min.js"></script>
+        <script src="{{ asset('js/gdsfeel.js') }}"></script>
+        <script src="{{ asset('js/lib_data.js') }}"></script>
+        <script src="{{ asset('js/canvas.js') }}"></script>
     </head>
-    <body>
+    <body onload="loadIt()">
         <div id="container" class="box max-h-full">
             <div id="row1" class="header row">
-                <div id="struc_name" style="visibility: hidden;">{{ $struc_name }}</div>
-                <div id="prefs">
+                <div id="struc_name" class="h-0 invisible">{{ $struc_name }}</div>
+                <div id="prefs" class="h-0 invisible">
                     ここにプリファレンスパネル
                 </div>
                 <div>data path: <span id="struc_path" class="font-bold">
